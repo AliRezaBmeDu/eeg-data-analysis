@@ -32,3 +32,12 @@ print('Targets', list(TARGETS))
 df.head()
 
 
+# Creating a Unique EEG Segment per eeg_id:
+# The code groups (groupby) the EEG data (df) by eeg_id. Each eeg_id represents a different EEG recording.
+# It then picks the first spectrogram_id and the earliest (min) spectrogram_label_offset_seconds for each eeg_id. This helps in identifying the starting point of each EEG segment.
+# The resulting DataFrame train has columns spec_id (first spectrogram_id) and min (earliest spectrogram_label_offset_seconds).
+train = df.groupby('eeg_id')[['spectrogram_id','spectrogram_label_offset_seconds']].agg(
+    {'spectrogram_id':'first','spectrogram_label_offset_seconds':'min'})
+train.columns = ['spec_id','min']
+
+
